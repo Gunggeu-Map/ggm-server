@@ -33,8 +33,6 @@ public class Answer {
     this.isGpt = isGpt;
   }
 
-
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -56,10 +54,10 @@ public class Answer {
   @Column(nullable = false)
   private LocalDateTime createdAt;
 
-
+  
   @PrePersist
   public void onCreate() {
     this.createdAt = LocalDateTime.now();
   }
-
+  
 }
