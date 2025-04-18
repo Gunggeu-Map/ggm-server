@@ -2,6 +2,7 @@ package com.gunggeumap.ggm.question.controller;
 
 import com.gunggeumap.ggm.common.dto.ApiResult;
 import com.gunggeumap.ggm.question.dto.request.QuestionRegisterRequest;
+import com.gunggeumap.ggm.question.dto.response.QuestionDetailResponse;
 import com.gunggeumap.ggm.question.dto.response.QuestionSummaryResponse;
 import com.gunggeumap.ggm.question.service.QuestionService;
 import jakarta.validation.Valid;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +40,11 @@ public class QuestionController {
         .body(ApiResult.success(questionService.createQuestion(request), HttpStatus.CREATED.value(),
             "질문 생성 성공"));
 
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<ApiResult<QuestionDetailResponse>> getQuestionDetail(@PathVariable Long id) {
+    return ResponseEntity.ok(ApiResult.success(questionService.getQuestionDetail(id)));
   }
 
 }

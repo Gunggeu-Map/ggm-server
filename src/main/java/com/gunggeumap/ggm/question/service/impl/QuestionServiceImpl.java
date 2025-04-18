@@ -1,7 +1,10 @@
 package com.gunggeumap.ggm.question.service.impl;
 
 import com.gunggeumap.ggm.question.dto.request.QuestionRegisterRequest;
+import com.gunggeumap.ggm.question.dto.response.QuestionDetailResponse;
 import com.gunggeumap.ggm.question.dto.response.QuestionSummaryResponse;
+import com.gunggeumap.ggm.question.entity.Question;
+import com.gunggeumap.ggm.question.exception.QuestionNotFoundException;
 import com.gunggeumap.ggm.question.repository.QuestionRepository;
 import com.gunggeumap.ggm.question.service.QuestionService;
 import com.gunggeumap.ggm.user.entity.User;
@@ -43,6 +46,13 @@ public class QuestionServiceImpl implements QuestionService {
 
     questionRepository.save(request.toEntity(user, point));
     return null;
+  }
+
+  @Override
+  public QuestionDetailResponse getQuestionDetail(Long questionId) {
+
+    Question question = questionRepository.findQuestionById(questionId).orElseThrow(() -> new QuestionNotFoundException(questionId + "를 찾을 수 없습니다."));
+    return QuestionDetailResponse.from(question);
   }
 
 }
