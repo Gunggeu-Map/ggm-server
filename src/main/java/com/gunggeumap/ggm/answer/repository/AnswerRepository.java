@@ -8,5 +8,4 @@ public interface AnswerRepository extends JpaRepository<Answer,Long> {
 
   List<Answer> findAnswerByQuestionId(Long questionId);
 
-
 }
