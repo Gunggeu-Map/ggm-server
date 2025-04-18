@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,6 +33,17 @@ import org.locationtech.jts.geom.Point;
 @Entity
 @Table(name = "questions")
 public class Question {
+
+  public Question(User user, Category category, String title, String content, String imageUrl,
+      Point location, boolean isPublic) {
+    this.user = user;
+    this.category = category;
+    this.title = title;
+    this.content = content;
+    this.imageUrl = imageUrl;
+    this.location = location;
+    this.isPublic = isPublic;
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,4 +84,10 @@ public class Question {
   @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Answer> answers = new ArrayList<>();
 
+
+  @PrePersist
+  protected void onCreate() {
+    this.createdAt = LocalDateTime.now();
+    this.likeCount = 0;
+  }
 }
