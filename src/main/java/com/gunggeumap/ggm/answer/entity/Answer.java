@@ -31,7 +31,7 @@ public class Answer {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "writer_id")
-  private User writerId;
+  private User writer;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "question_id", nullable = false)
