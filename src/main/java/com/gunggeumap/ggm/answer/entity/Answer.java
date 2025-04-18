@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -24,6 +25,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "answers")
 public class Answer {
+
+  public Answer(User writer, Question question, String content, boolean isGpt) {
+    this.writer = writer;
+    this.question = question;
+    this.content = content;
+    this.isGpt = isGpt;
+  }
+
+
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,5 +55,11 @@ public class Answer {
 
   @Column(nullable = false)
   private LocalDateTime createdAt;
+
+
+  @PrePersist
+  public void onCreate() {
+    this.createdAt = LocalDateTime.now();
+  }
 
 }
