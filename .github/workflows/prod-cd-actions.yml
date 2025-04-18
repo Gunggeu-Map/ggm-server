@@ -1,7 +1,6 @@
-name: prod-deploy-actions
+name: Prod Deploy Actions
 
 on:
-  # main 브랜치에 push 발생 시 배포 실행
   push:
     branches: [ "main" ]
 
@@ -21,11 +20,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3. Gradle로 빌드 수행 (테스트 포함)
+      # 3. Gradle 빌드 및 테스트 실행
       - name: Build and run tests with Gradle
         run: ./gradlew clean build --no-daemon
 
-      # 4. 빌드된 JAR 아티팩트 업로드 (다음 job에서 사용 가능)
+      # 4. JAR 아티팩트 업로드
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
@@ -37,18 +36,18 @@ jobs:
     needs: build-test
 
     steps:
-      # 1. 레포지토리 코드 재체크아웃 (deploy job에서도 필요함)
+      # 1. 레포지토리 체크아웃
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      # 2. 이전 단계에서 업로드한 JAR 아티팩트 다운로드
+      # 2. JAR 아티팩트 다운로드
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: jar-artifact
           path: build/libs
 
-      # 3. AWS 자격 증명 구성 (ECR 접근에 필요)
+      # 3. AWS 자격 증명 설정
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -56,11 +55,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      # 4. ECR 로그인 (Docker 이미지 푸시를 위해 필요)
+      # 4. ECR 로그인
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      # 5. Docker 이미지 빌드 및 ECR에 push
+      # 5. Docker 이미지 빌드 및 ECR 푸시
       - name: Build and push Docker image
         run: |
           docker buildx build --platform linux/amd64 \
@@ -68,17 +67,7 @@ jobs:
           -t ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest \
           --push .
 
-      # 6. EC2에 있는 기존 docker-compose.yml 삭제
-      - name: Remove existing docker-compose file on EC2
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            rm -rf /home/ubuntu/ggm-server/docker-compose.yml
-
-      # 7. 로컬의 docker-compose.yml 파일을 EC2에 복사
+      # 6. EC2에 docker-compose.yml 복사
       - name: Copy docker-compose file to EC2
         uses: appleboy/scp-action@master
         with:
@@ -88,25 +77,29 @@ jobs:
           source: "docker-compose.yml"
           target: "/home/ubuntu/ggm-server/"
 
-      # 8. EC2에 빈 .env 파일 생성 (나중에 값 추가 예정)
-      - name: Create placeholder .env file on EC2
+      # 7. .env 파일 생성 (.env는 GitHub Secrets 기반으로)
+      - name: Create .env file on EC2
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "# .env placeholder for prod" > /home/ubuntu/ggm-server/.env
+            echo "DB_HOST=ggm-db.chkwa0meci1y.ap-northeast-2.rds.amazonaws.com" > /home/ubuntu/ggm-server/.env
+            echo "DB_USERNAME=postgres" >> /home/ubuntu/ggm-server/.env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> /home/ubuntu/ggm-server/.env
+            echo "DB_DEV_NAME=ggm_dev" >> /home/ubuntu/ggm-server/.env
+            echo "DB_PROD_NAME=ggm_prod" >> /home/ubuntu/ggm-server/.env
 
-      # 9. EC2에서 Docker Compose로 애플리케이션 배포
-      - name: Deploy application on EC2
+      # 8. EC2에서 Docker Compose 실행
+      - name: Deploy on EC2 using Docker Compose
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
             cd /home/ubuntu/ggm-server
+            aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
             docker compose pull
             docker compose up -d

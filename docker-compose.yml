@@ -2,10 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: ggm-backend
+    image: 515966527734.dkr.ecr.ap-northeast-2.amazonaws.com/ggm-server:latest
     ports:
       - "8080:8080"
     env_file:
