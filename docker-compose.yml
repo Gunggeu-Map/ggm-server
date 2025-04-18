@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ggm-backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      REDIS_HOST: redis
+    depends_on:
+      - redis
+    restart: always
+
+  redis:
+    image: redis:7.2
+    container_name: ggm-redis
+    ports:
+      - "6379:6379"
+    restart: always
