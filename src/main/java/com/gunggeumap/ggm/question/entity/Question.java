@@ -1,5 +1,6 @@
 package com.gunggeumap.ggm.question.entity;
 
+import com.gunggeumap.ggm.answer.entity.Answer;
 import com.gunggeumap.ggm.question.enums.Category;
 import com.gunggeumap.ggm.user.entity.User;
 import jakarta.persistence.CascadeType;
@@ -67,4 +68,8 @@ public class Question {
 
   @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<QuestionLike> likes = new ArrayList<>();
+
+  @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Answer> answers = new ArrayList<>();
+
 }
