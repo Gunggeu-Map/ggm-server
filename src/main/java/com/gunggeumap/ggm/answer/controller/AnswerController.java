@@ -5,6 +5,7 @@ import com.gunggeumap.ggm.answer.dto.request.AnswerCreateRequest;
 import com.gunggeumap.ggm.answer.dto.response.AnswerResponse;
 import com.gunggeumap.ggm.answer.service.AnswerService;
 import com.gunggeumap.ggm.common.dto.ApiResult;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class AnswerController {
   }
 
   @PostMapping
-  public ResponseEntity<ApiResult<Void>> createAnswer(@RequestBody AnswerCreateRequest request,
+  public ResponseEntity<ApiResult<Void>> createAnswer(@Valid @RequestBody AnswerCreateRequest request,
       @PathVariable Long id) {
     return ResponseEntity.status(HttpStatus.CREATED).body
     (ApiResult.success(answerService.createAnswer(request,id), HttpStatus.CREATED.value(), "답변 생성 성공"));

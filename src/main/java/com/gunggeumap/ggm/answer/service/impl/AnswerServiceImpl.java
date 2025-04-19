@@ -16,9 +16,12 @@ import com.gunggeumap.ggm.user.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AnswerServiceImpl implements AnswerService {
 
   private final AnswerRepository answerRepository;
@@ -39,6 +42,7 @@ public class AnswerServiceImpl implements AnswerService {
   }
 
   @Override
+  @Transactional
   public Void createAnswer(AnswerCreateRequest request,Long questionId) {
 
     User user = userRepository.findById(request.writerId())
