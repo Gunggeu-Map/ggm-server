@@ -23,8 +23,6 @@ public class FileUploadServiceImpl implements FileUploadService {
   @Value("${spring.s3.directory}")
   private String directory;
 
-  private static final String REGION = "ap-northeast-2";
-
   @Override
   public String uploadFile(MultipartFile image) throws IOException {
     if (image == null || image.isEmpty()) {

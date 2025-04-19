@@ -90,6 +90,10 @@ jobs:
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> /home/ubuntu/ggm-server/.env
             echo "DB_DEV_NAME=ggm_dev" >> /home/ubuntu/ggm-server/.env
             echo "DB_PROD_NAME=ggm_prod" >> /home/ubuntu/ggm-server/.env
+            echo "IAM_ACCESS_KEY_ID=${{ secrets.IAM_ACCESS_KEY_ID }}" >> /home/ubuntu/ggm-server/.env
+            echo "IAM_SECRET_ACCESS_KEY=${{ secrets.IAM_SECRET_ACCESS_KEY }}" >> /home/ubuntu/ggm-server/.env
+            echo "S3_BUCKET_NAME=ggm-uploaded-files" >> /home/ubuntu/ggm-server/.env
+            echo "S3_DIRECTORY=prod" >> /home/ubuntu/ggm-server/.env
 
       # 8. EC2에서 Docker Compose 실행
       - name: Deploy on EC2 using Docker Compose
