@@ -15,6 +15,7 @@ import com.gunggeumap.ggm.question.service.QuestionService;
 import com.gunggeumap.ggm.user.entity.User;
 import com.gunggeumap.ggm.user.exception.UserNotFoundException;
 import com.gunggeumap.ggm.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
@@ -43,6 +44,7 @@ public class QuestionServiceImpl implements QuestionService {
   }
 
   @Override
+  @Transactional
   public Void createQuestion(QuestionRegisterRequest request) {
 
     User user = userRepository.findById(request.userId())

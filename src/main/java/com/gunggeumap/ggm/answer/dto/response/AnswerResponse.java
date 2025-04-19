@@ -14,8 +14,9 @@ public record AnswerResponse(
 
   // Answer에서 정보를 가져오고, likeCount랑 dislikeCount는 AnswerVote에서 가져와야하니깐.
   public static AnswerResponse from(Answer answer, Long likeCount, Long dislikeCount) {
+    String writerNickname = answer.isGpt() ? "GPT" : answer.getWriter().getNickname();
     return new AnswerResponse(
-        answer.getWriter().getNickname(),
+        writerNickname,
         answer.getContent(),
         answer.getCreatedAt(),
         likeCount,

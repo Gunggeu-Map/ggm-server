@@ -13,6 +13,7 @@ import com.gunggeumap.ggm.question.repository.QuestionRepository;
 import com.gunggeumap.ggm.user.entity.User;
 import com.gunggeumap.ggm.user.exception.UserNotFoundException;
 import com.gunggeumap.ggm.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class AnswerServiceImpl implements AnswerService {
   }
 
   @Override
+  @Transactional
   public Void createAnswer(AnswerCreateRequest request,Long questionId) {
 
     User user = userRepository.findById(request.writerId())
