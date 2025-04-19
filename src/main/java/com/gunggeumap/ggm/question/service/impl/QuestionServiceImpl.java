@@ -1,11 +1,14 @@
 package com.gunggeumap.ggm.question.service.impl;
 
+import com.gunggeumap.ggm.answer.entity.Answer;
+import com.gunggeumap.ggm.answer.repository.AnswerRepository;
 import com.gunggeumap.ggm.question.dto.request.QuestionRegisterRequest;
 import com.gunggeumap.ggm.question.dto.response.QuestionDetailResponse;
 import com.gunggeumap.ggm.question.dto.response.QuestionSummaryResponse;
 import com.gunggeumap.ggm.question.entity.Question;
 import com.gunggeumap.ggm.question.exception.QuestionNotFoundException;
 import com.gunggeumap.ggm.question.repository.QuestionRepository;
+import com.gunggeumap.ggm.question.service.ChatGptService;
 import com.gunggeumap.ggm.question.service.QuestionService;
 import com.gunggeumap.ggm.user.entity.User;
 import com.gunggeumap.ggm.user.exception.UserNotFoundException;
@@ -25,6 +28,8 @@ public class QuestionServiceImpl implements QuestionService {
 
   private final QuestionRepository questionRepository;
   private final UserRepository userRepository;
+  private final ChatGptService chatGptService;
+  private final AnswerRepository answerRepository;
 
   @Override
   public List<QuestionSummaryResponse> getTopQuestions(int size) {
@@ -44,7 +49,15 @@ public class QuestionServiceImpl implements QuestionService {
     Point point = geometryFactory.createPoint(
         new Coordinate(request.longitude(), request.latitude()));
 
-    questionRepository.save(request.toEntity(user, point));
+
+    Question question = questionRepository.save(request.toEntity(user, point));
+
+    String gptAnswer = chatGptService.getChatCompletion(question.getContent());
+
+    Answer answer = new Answer(null, question, gptAnswer, true);
+
+    answerRepository.save(answer);
+
     return null;
   }
 
