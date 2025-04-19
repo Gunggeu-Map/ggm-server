@@ -22,6 +22,6 @@ spring:
   s3:
     directory: dev
 
-  openai:
-    api:
-      key: ${GPT_API_KEY}
+openai:
+  api:
+    key: ${GPT_API_KEY}
