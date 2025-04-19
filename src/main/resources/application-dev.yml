@@ -25,3 +25,5 @@ spring:
 openai:
   api:
     key: ${GPT_API_KEY}
+
+

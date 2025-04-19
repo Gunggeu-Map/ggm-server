@@ -33,8 +33,7 @@ public class QuestionServiceImpl implements QuestionService {
   private final ChatGptService chatGptService;
   private final AnswerRepository answerRepository;
 
-
-
+  
   @Override
   public List<QuestionSummaryResponse> getTopQuestions(int size) {
     Pageable limit = PageRequest.of(0, size);
