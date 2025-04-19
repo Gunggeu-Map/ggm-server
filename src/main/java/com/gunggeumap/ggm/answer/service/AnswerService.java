@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AnswerService {
 
-  List<AnswerResponse> getAnswerByQuestionId(Long questionId);
+  List<AnswerResponse> getAnswerByQuestionId(Long questionId, Long userId);
 
   Void createAnswer(AnswerCreateRequest request,Long questionId);
 

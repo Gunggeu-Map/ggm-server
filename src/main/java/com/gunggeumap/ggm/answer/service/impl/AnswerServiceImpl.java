@@ -34,13 +34,21 @@ public class AnswerServiceImpl implements AnswerService {
   private final QuestionRepository questionRepository;
 
   @Override
-  public List<AnswerResponse> getAnswerByQuestionId(Long questionId) {
+  public List<AnswerResponse> getAnswerByQuestionId(Long questionId, Long userId) {
 
     List<Answer> answers = answerRepository.findAnswerByQuestionId(questionId);
+
     return answers.stream().map(answer -> {
       Long likeCount = answerVoteRepository.countByAnswerAndVoteType(answer, VoteType.UP);
       Long dislikeCount = answerVoteRepository.countByAnswerAndVoteType(answer, VoteType.DOWN);
-      return AnswerResponse.from(answer, likeCount, dislikeCount);
+
+      // 유저가 해당 답변에 투표했는지 확인
+      AnswerVoteId id = new AnswerVoteId(userId, answer.getId());
+      VoteType userVote = answerVoteRepository.findById(id)
+          .map(AnswerVote::getVoteType)
+          .orElse(null);
+
+      return AnswerResponse.from(answer, likeCount, dislikeCount, userVote);
     }).toList();
 
   }

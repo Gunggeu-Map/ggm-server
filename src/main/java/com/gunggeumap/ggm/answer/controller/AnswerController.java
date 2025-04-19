@@ -29,8 +29,12 @@ public class AnswerController {
 
   // 질문 ID에 해당하는 답변 목록 조회
   @GetMapping("/questions/{id}/answers")
-  public ResponseEntity<ApiResult<List<AnswerResponse>>> getAnswers(@PathVariable Long id) {
-    return ResponseEntity.ok(ApiResult.success(answerService.getAnswerByQuestionId(id)));
+  public ResponseEntity<ApiResult<List<AnswerResponse>>> getAnswers(@PathVariable Long id,
+      Long userId) {
+    //@AuthenticationPrincipal CustomUserDetails userDetails ) {
+    //Long userId = userDetails.getUser().getId();
+    List<AnswerResponse> answers = answerService.getAnswerByQuestionId(id, userId);
+    return ResponseEntity.ok(ApiResult.success(answers));
   }
 
   // 답변 작성
