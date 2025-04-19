@@ -34,10 +34,9 @@ import org.locationtech.jts.geom.Point;
 @Table(name = "questions")
 public class Question {
 
-  public Question(User user, Category category, String title, String content, String imageUrl,
+  public Question(User user, String title, String content, String imageUrl,
       Point location, boolean isPublic) {
     this.user = user;
-    this.category = category;
     this.title = title;
     this.content = content;
     this.imageUrl = imageUrl;
@@ -54,7 +53,7 @@ public class Question {
   private User user;
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
+  @Column(nullable = true)
   private Category category;
 
   @Column(nullable = false)
@@ -84,6 +83,9 @@ public class Question {
   @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Answer> answers = new ArrayList<>();
 
+  public void updateCategory(Category category) {
+    this.category = category;
+  }
 
   @PrePersist
   protected void onCreate() {

@@ -11,18 +11,17 @@ import java.util.Map;
 @Service
 public class ChatGptServiceImpl implements ChatGptService {
 
-  @Value("${openai.api.key}")
-  private String apiKey;
-
   private final RestClient restClient;
 
-  public ChatGptServiceImpl(RestClient.Builder restClientBuilder) {
+  public ChatGptServiceImpl(
+      @Value("${openai.api.key}") String apiKey,
+      RestClient.Builder restClientBuilder
+  ) {
     this.restClient = restClientBuilder
         .baseUrl("https://api.openai.com/v1")
         .defaultHeader("Authorization", "Bearer " + apiKey)
         .defaultHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
         .build();
-
   }
 
   public String getChatCompletion(String prompt) {
