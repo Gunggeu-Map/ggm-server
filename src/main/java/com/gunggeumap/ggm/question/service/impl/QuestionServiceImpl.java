@@ -4,6 +4,7 @@ import com.gunggeumap.ggm.answer.entity.Answer;
 import com.gunggeumap.ggm.answer.repository.AnswerRepository;
 import com.gunggeumap.ggm.question.GptAnswerParser;
 import com.gunggeumap.ggm.question.dto.request.QuestionRegisterRequest;
+import com.gunggeumap.ggm.question.dto.response.MapQuestionSummaryResponse;
 import com.gunggeumap.ggm.question.dto.response.QuestionDetailResponse;
 import com.gunggeumap.ggm.question.dto.response.QuestionSummaryResponse;
 import com.gunggeumap.ggm.question.entity.Question;
@@ -135,6 +136,13 @@ public class QuestionServiceImpl implements QuestionService {
       question.increaseLikeCount();
       return true; // true: 좋아요가 추가됨
     }
+  }
+
+  @Override
+  public List<QuestionSummaryResponse> getQuestionsByUser(Long userId) {
+    return questionRepository.findByUserId(userId).stream()
+        .map(QuestionSummaryResponse::from)
+        .toList();
   }
 
 }

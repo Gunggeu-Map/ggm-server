@@ -48,4 +48,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
   Long countByUserId(Long userId);
 
+  List<Question> findByUserId(Long userId);
 }

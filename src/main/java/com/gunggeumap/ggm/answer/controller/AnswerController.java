@@ -6,12 +6,15 @@ import com.gunggeumap.ggm.answer.dto.response.AnswerResponse;
 import com.gunggeumap.ggm.answer.dto.response.VoteResponse;
 import com.gunggeumap.ggm.answer.enums.VoteType;
 import com.gunggeumap.ggm.answer.service.AnswerService;
+import com.gunggeumap.ggm.auth.CustomUserDetails;
 import com.gunggeumap.ggm.common.dto.ApiResult;
+import com.gunggeumap.ggm.question.dto.response.QuestionSummaryResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +60,15 @@ public class AnswerController {
     VoteResponse response = answerService.voteAnswer(answerId, memberId, voteType);
     //VoteResponse response = answerService.voteAnswer(answerId, userDetails.getUser().getId(), voteType);
     return ResponseEntity.ok(ApiResult.success(response));
+  }
+
+  @GetMapping("/questions/answered")
+  public ResponseEntity<ApiResult<List<QuestionSummaryResponse>>> getAnsweredQuestions(
+      @AuthenticationPrincipal CustomUserDetails userDetails
+  ) {
+    Long userId = userDetails.userId();
+    List<QuestionSummaryResponse> result = answerService.getAllAnsweredQuestions(userId);
+    return ResponseEntity.ok(ApiResult.success(result));
   }
 
 }

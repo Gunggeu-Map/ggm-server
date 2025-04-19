@@ -10,6 +10,7 @@ import com.gunggeumap.ggm.answer.enums.VoteType;
 import com.gunggeumap.ggm.answer.repository.AnswerRepository;
 import com.gunggeumap.ggm.answer.repository.AnswerVoteRepository;
 import com.gunggeumap.ggm.answer.service.AnswerService;
+import com.gunggeumap.ggm.question.dto.response.QuestionSummaryResponse;
 import com.gunggeumap.ggm.question.entity.Question;
 import com.gunggeumap.ggm.question.exception.QuestionNotFoundException;
 import com.gunggeumap.ggm.question.repository.QuestionRepository;
@@ -102,6 +103,14 @@ public class AnswerServiceImpl implements AnswerService {
     long dislikeCount = answerVoteRepository.countByAnswerAndVoteType(answer, VoteType.DOWN);
 
     return new VoteResponse(answerId, likeCount, dislikeCount, resultVote);
+  }
+
+  @Override
+  public List<QuestionSummaryResponse> getAllAnsweredQuestions(Long userId) {
+    List<Answer> answers = answerRepository.findAnswersByWriterId(userId);
+    return answers.stream()
+        .map(answer -> QuestionSummaryResponse.from(answer.getQuestion()))
+        .toList();
   }
 
 }
