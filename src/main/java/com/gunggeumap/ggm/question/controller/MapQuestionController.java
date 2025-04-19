@@ -40,4 +40,12 @@ public class MapQuestionController {
     return ResponseEntity.ok(ApiResult.success(results));
   }
 
+  @GetMapping("/search/category")
+  public ResponseEntity<ApiResult<List<MapQuestionSummaryResponse>>> searchQuestionsByCategory(
+      @RequestParam String category
+  ) {
+    List<MapQuestionSummaryResponse> results = mapQuestionService.searchQuestionsByCategory(category);
+    return ResponseEntity.ok(ApiResult.success(results));
+  }
+
 }
