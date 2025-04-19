@@ -2,6 +2,7 @@ package com.gunggeumap.ggm.question.service.impl;
 
 import com.gunggeumap.ggm.question.dto.response.MapQuestionSummaryResponse;
 import com.gunggeumap.ggm.question.entity.Question;
+import com.gunggeumap.ggm.question.enums.Category;
 import com.gunggeumap.ggm.question.repository.QuestionRepository;
 import com.gunggeumap.ggm.question.service.MapQuestionService;
 import java.util.List;
@@ -33,7 +34,11 @@ public class MapQuestionServiceImpl implements MapQuestionService {
 
   @Override
   public List<MapQuestionSummaryResponse> searchQuestionsByCategory(String category) {
-    return List.of();
+    Category categoryEnum = Category.valueOf(category.toUpperCase());
+
+    return questionRepository.findByCategory(categoryEnum).stream()
+        .map(MapQuestionSummaryResponse::from)
+        .toList();
   }
 
 }
