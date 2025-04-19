@@ -36,7 +36,7 @@ public class MapQuestionServiceImpl implements MapQuestionService {
   public List<MapQuestionSummaryResponse> searchQuestionsByCategory(String category) {
     Category categoryEnum = Category.valueOf(category.toUpperCase());
 
-    return questionRepository.findByCategory(categoryEnum).stream()
+    return questionRepository.findByCategoryWithAnswers(categoryEnum).stream()
         .map(MapQuestionSummaryResponse::from)
         .toList();
   }
