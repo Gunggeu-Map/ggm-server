@@ -14,17 +14,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "users", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"provider", "providerId"})
+    @UniqueConstraint(columnNames = {"provider", "provider_id"})
 })
 public class User {
 
@@ -35,7 +33,7 @@ public class User {
   @Column(nullable = false)
   private String provider;
 
-  @Column(nullable = false)
+  @Column(name = "provider_id", nullable = false)
   private String providerId;
 
   @Column(nullable = false, unique = true)
@@ -49,4 +47,13 @@ public class User {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<QuestionLike> likedQuestions = new ArrayList<>();
+
+  @Builder
+  private User(String provider, String providerId, String nickname, LocalDate birth) {
+    this.provider = provider;
+    this.providerId = providerId;
+    this.nickname = nickname;
+    this.birth = birth;
+    this.createdAt = LocalDateTime.now();
+  }
 }
