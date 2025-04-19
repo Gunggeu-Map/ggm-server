@@ -39,5 +39,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
       """)
   List<Question> findByKeywordContainingIgnoreCase(@Param("keyword") String keyword);
 
-  List<Question> findByCategory(Category category);
+  List<Question> findByCategoryWithAnswers(@Param("category") Category category);
 }
