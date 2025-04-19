@@ -87,9 +87,18 @@ public class Question {
     this.category = category;
   }
 
+  public void increaseLikeCount() {
+    this.likeCount++;
+  }
+
+  public void decreaseLikeCount() {
+    this.likeCount--;
+  }
+
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();
     this.likeCount = 0;
   }
+
 }

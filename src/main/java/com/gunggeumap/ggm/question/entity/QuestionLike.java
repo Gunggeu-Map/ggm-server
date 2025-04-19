@@ -22,6 +22,8 @@ public class QuestionLike {
   @EmbeddedId
   private QuestionLikeId id;
 
+
+
   @MapsId("userId")
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)

@@ -25,6 +25,7 @@ public class QuestionController {
 
   private final QuestionService questionService;
 
+
   @GetMapping("/top")
   public ResponseEntity<ApiResult<List<QuestionSummaryResponse>>> getTopQuestions(
       @RequestParam(defaultValue = "5") int size
@@ -43,8 +44,19 @@ public class QuestionController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ApiResult<QuestionDetailResponse>> getQuestionDetail(@PathVariable Long id) {
+  public ResponseEntity<ApiResult<QuestionDetailResponse>> getQuestionDetail(
+      @PathVariable Long id) {
     return ResponseEntity.ok(ApiResult.success(questionService.getQuestionDetail(id)));
+  }
+
+  @PostMapping("/{questionId}/like")
+  public ResponseEntity<ApiResult<Boolean>> toggleLike(
+      @PathVariable Long questionId,
+      //@AuthenticationPrincipal CustomUserDetails userDetails
+      Long memberId
+  ) {
+    boolean liked = questionService.toggleQuestionLike(questionId, memberId);
+    return ResponseEntity.ok(ApiResult.success(liked));
   }
 
 }

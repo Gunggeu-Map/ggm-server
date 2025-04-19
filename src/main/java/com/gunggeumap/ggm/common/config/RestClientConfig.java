@@ -1,4 +1,4 @@
-package com.gunggeumap.ggm.common;
+package com.gunggeumap.ggm.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -41,4 +41,8 @@ public class AnswerVote {
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private VoteType voteType;
+
+  public void updateVote(VoteType voteType) {
+    this.voteType = voteType;
+  }
 }

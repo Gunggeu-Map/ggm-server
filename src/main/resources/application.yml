@@ -33,6 +33,23 @@ spring:
         bucket: ggm-uploaded-files
 
 
+  jwt:
+    access:
+      secret-key: ${JWT_ACCESS_SECRET_KEY}
+    refresh:
+      secret-key: ${JWT_REFRESH_SECRET_KEY}
+
+  oauth2:
+    client:
+      provider:
+        kakao:
+          name: "KAKAO"
+          url: "https://kapi.kakao.com/v2/user/me"
+        naver:
+          name: "NAVER"
+          url: "https://openapi.naver.com/v1/nid/me"
+
+
 openai:
   api:
     key: ${GPT_API_KEY}
