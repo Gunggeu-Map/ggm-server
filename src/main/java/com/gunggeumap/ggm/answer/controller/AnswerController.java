@@ -33,19 +33,20 @@ public class AnswerController {
   // 질문 ID에 해당하는 답변 목록 조회
   @GetMapping("/questions/{id}/answers")
   public ResponseEntity<ApiResult<List<AnswerResponse>>> getAnswers(@PathVariable Long id,
-      Long userId) {
-    //@AuthenticationPrincipal CustomUserDetails userDetails ) {
-    //Long userId = userDetails.getUser().getId();
-    List<AnswerResponse> answers = answerService.getAnswerByQuestionId(id, userId);
+      @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+    List<AnswerResponse> answers = answerService.getAnswerByQuestionId(id, userDetails.userId());
     return ResponseEntity.ok(ApiResult.success(answers));
   }
 
   // 답변 작성
   @PostMapping("/questions/{id}/answers")
-  public ResponseEntity<ApiResult<Void>> createAnswer(@Valid @RequestBody AnswerCreateRequest request,
+  public ResponseEntity<ApiResult<Void>> createAnswer(
+      @Valid @RequestBody AnswerCreateRequest request,
       @PathVariable Long id) {
     return ResponseEntity.status(HttpStatus.CREATED).body
-    (ApiResult.success(answerService.createAnswer(request,id), HttpStatus.CREATED.value(), "답변 생성 성공"));
+        (ApiResult.success(answerService.createAnswer(request, id), HttpStatus.CREATED.value(),
+            "답변 생성 성공"));
   }
 
   // 답변 좋아요 / 싫어요
@@ -53,12 +54,10 @@ public class AnswerController {
   public ResponseEntity<ApiResult<VoteResponse>> voteAnswer(
       @PathVariable Long answerId,
       @RequestParam VoteType voteType,
-      Long memberId
-      //@AuthenticationPrincipal CustomUserDetails userDetails
+      @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
 
-    VoteResponse response = answerService.voteAnswer(answerId, memberId, voteType);
-    //VoteResponse response = answerService.voteAnswer(answerId, userDetails.getUser().getId(), voteType);
+    VoteResponse response = answerService.voteAnswer(answerId, userDetails.userId(), voteType);
     return ResponseEntity.ok(ApiResult.success(response));
   }
 
