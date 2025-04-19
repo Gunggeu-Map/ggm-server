@@ -20,3 +20,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    open-in-view: false
+
+  cloud:
+    aws:
+      credentials:
+        access-key: ${IAM_ACCESS_KEY_ID}
+        secret-key: ${IAM_SECRET_ACCESS_KEY}
+      region:
+        static: ap-northeast-2
+      s3:
+        bucket: ggm-uploaded-files
+

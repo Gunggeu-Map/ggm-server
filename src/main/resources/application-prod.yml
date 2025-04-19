@@ -17,3 +17,6 @@ spring:
     redis:
       host: redis
       port: 6379
+
+  s3:
+    directory: prod
