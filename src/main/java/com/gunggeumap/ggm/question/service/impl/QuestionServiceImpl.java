@@ -139,9 +139,9 @@ public class QuestionServiceImpl implements QuestionService {
   }
 
   @Override
-  public List<MapQuestionSummaryResponse> getQuestionsByUser(Long userId) {
-    return questionRepository.findAllByUserIdWithAnswers(userId).stream()
-        .map(MapQuestionSummaryResponse::from)
+  public List<QuestionSummaryResponse> getQuestionsByUser(Long userId) {
+    return questionRepository.findByUserId(userId).stream()
+        .map(QuestionSummaryResponse::from)
         .toList();
   }
 

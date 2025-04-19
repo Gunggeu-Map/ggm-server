@@ -46,10 +46,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 """)
   List<Question> findByCategoryWithAnswers(@Param("category") Category category);
 
-  @Query("""
-    SELECT DISTINCT q FROM Question q
-    LEFT JOIN FETCH q.answers
-    WHERE q.user.id = :userId
-""")
-  List<Question> findAllByUserIdWithAnswers(@Param("userId") Long userId);
+  List<Question> findByUserId(Long userId);
 }

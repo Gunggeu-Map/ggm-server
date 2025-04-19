@@ -16,5 +16,5 @@ public interface QuestionService {
 
   boolean toggleQuestionLike(Long questionId, Long userId);
 
-  List<MapQuestionSummaryResponse> getQuestionsByUser(Long userId);
+  List<QuestionSummaryResponse> getQuestionsByUser(Long userId);
 }
