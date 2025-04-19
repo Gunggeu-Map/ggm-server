@@ -13,4 +13,5 @@ public interface QuestionService {
 
   QuestionDetailResponse getQuestionDetail(Long questionId);
 
+  boolean toggleQuestionLike(Long questionId, Long userId);
 }

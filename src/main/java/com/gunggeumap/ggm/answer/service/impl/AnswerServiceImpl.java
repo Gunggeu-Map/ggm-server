@@ -13,13 +13,15 @@ import com.gunggeumap.ggm.question.repository.QuestionRepository;
 import com.gunggeumap.ggm.user.entity.User;
 import com.gunggeumap.ggm.user.exception.UserNotFoundException;
 import com.gunggeumap.ggm.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AnswerServiceImpl implements AnswerService {
 
   private final AnswerRepository answerRepository;
