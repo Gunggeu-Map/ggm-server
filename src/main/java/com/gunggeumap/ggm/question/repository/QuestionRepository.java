@@ -39,5 +39,10 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
       """)
   List<Question> findByKeywordContainingIgnoreCase(@Param("keyword") String keyword);
 
+  @Query("""
+  SELECT DISTINCT q FROM Question q
+  LEFT JOIN FETCH q.answers
+  WHERE q.category = :category
+""")
   List<Question> findByCategoryWithAnswers(@Param("category") Category category);
 }
