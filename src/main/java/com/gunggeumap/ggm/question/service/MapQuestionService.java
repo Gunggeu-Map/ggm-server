@@ -10,4 +10,6 @@ public interface MapQuestionService {
 
   List<MapQuestionSummaryResponse> searchQuestionsByKeyword(String keyword);
 
+  List<MapQuestionSummaryResponse> searchQuestionsByCategory(String category);
+
 }
