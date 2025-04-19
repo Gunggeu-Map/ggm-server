@@ -3,7 +3,6 @@ package com.gunggeumap.ggm.question.controller;
 import com.gunggeumap.ggm.auth.CustomUserDetails;
 import com.gunggeumap.ggm.common.dto.ApiResult;
 import com.gunggeumap.ggm.question.dto.request.QuestionRegisterRequest;
-import com.gunggeumap.ggm.question.dto.response.MapQuestionSummaryResponse;
 import com.gunggeumap.ggm.question.dto.response.QuestionDetailResponse;
 import com.gunggeumap.ggm.question.dto.response.QuestionSummaryResponse;
 import com.gunggeumap.ggm.question.service.QuestionService;
@@ -55,10 +54,9 @@ public class QuestionController {
   @PostMapping("/{questionId}/like")
   public ResponseEntity<ApiResult<Boolean>> toggleLike(
       @PathVariable Long questionId,
-      //@AuthenticationPrincipal CustomUserDetails userDetails
-      Long memberId
+      @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
-    boolean liked = questionService.toggleQuestionLike(questionId, memberId);
+    boolean liked = questionService.toggleQuestionLike(questionId, userDetails.userId());
     return ResponseEntity.ok(ApiResult.success(liked));
   }
 
