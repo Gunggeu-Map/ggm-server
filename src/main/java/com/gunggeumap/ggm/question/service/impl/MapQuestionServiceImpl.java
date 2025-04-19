@@ -31,4 +31,9 @@ public class MapQuestionServiceImpl implements MapQuestionService {
         .toList();
   }
 
+  @Override
+  public List<MapQuestionSummaryResponse> searchQuestionsByCategory(String category) {
+    return List.of();
+  }
+
 }

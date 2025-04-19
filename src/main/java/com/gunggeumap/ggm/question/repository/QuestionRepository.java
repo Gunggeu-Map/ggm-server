@@ -1,6 +1,7 @@
 package com.gunggeumap.ggm.question.repository;
 
 import com.gunggeumap.ggm.question.entity.Question;
+import com.gunggeumap.ggm.question.enums.Category;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
@@ -38,4 +39,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
       """)
   List<Question> findByKeywordContainingIgnoreCase(@Param("keyword") String keyword);
 
+  List<Question> findByCategory(Category category);
 }
