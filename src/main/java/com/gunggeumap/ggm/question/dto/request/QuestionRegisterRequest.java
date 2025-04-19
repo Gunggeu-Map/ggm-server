@@ -13,9 +13,6 @@ public record QuestionRegisterRequest(
     Long userId,
 
     @NotBlank
-    String category,
-
-    @NotBlank
     String title,
 
     @NotBlank
@@ -36,7 +33,6 @@ public record QuestionRegisterRequest(
   public Question toEntity(User user, Point point) {
     return new Question(
         user,
-        Category.valueOf(this.category),
         this.title,
         this.content,
         this.imageUrl,
