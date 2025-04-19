@@ -31,4 +31,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
       @Param("neLng") double neLng
   );
 
+  @Query("""
+        SELECT DISTINCT q FROM Question q
+        LEFT JOIN FETCH q.answers
+        WHERE q.title ILIKE %:keyword% OR q.content ILIKE %:keyword%
+      """)
+  List<Question> findByKeywordContainingIgnoreCase(@Param("keyword") String keyword);
+
 }

@@ -8,4 +8,6 @@ public interface MapQuestionService {
   List<MapQuestionSummaryResponse> getQuestionsWithinBounds(
       double swLat, double swLng, double neLat, double neLng);
 
+  List<MapQuestionSummaryResponse> searchQuestionsByKeyword(String keyword);
+
 }
