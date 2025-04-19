@@ -32,3 +32,7 @@ spring:
       s3:
         bucket: ggm-uploaded-files
 
+
+openai:
+  api:
+    key: ${GPT_API_KEY}
