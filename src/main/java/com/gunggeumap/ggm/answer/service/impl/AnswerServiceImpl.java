@@ -61,6 +61,7 @@ public class AnswerServiceImpl implements AnswerService {
     return null;
   }
 
+  @Transactional
   @Override
   public VoteResponse voteAnswer(Long answerId, Long userId, VoteType voteType) {
     Answer answer = answerRepository.findById(answerId)
