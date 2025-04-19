@@ -45,4 +45,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
   WHERE q.category = :category
 """)
   List<Question> findByCategoryWithAnswers(@Param("category") Category category);
+
+  List<Question> findByUserId(Long userId);
 }
