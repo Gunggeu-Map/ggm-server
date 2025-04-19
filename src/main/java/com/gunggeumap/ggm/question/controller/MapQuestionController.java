@@ -31,4 +31,13 @@ public class MapQuestionController {
 
     return ResponseEntity.ok(ApiResult.success(questionsWithinBounds));
   }
+
+  @GetMapping("/search")
+  public ResponseEntity<ApiResult<List<MapQuestionSummaryResponse>>> searchQuestionsByKeyword(
+      @RequestParam String keyword
+  ) {
+    List<MapQuestionSummaryResponse> results = mapQuestionService.searchQuestionsByKeyword(keyword);
+    return ResponseEntity.ok(ApiResult.success(results));
+  }
+
 }
