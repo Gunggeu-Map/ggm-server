@@ -95,6 +95,8 @@ jobs:
             echo "S3_BUCKET_NAME=ggm-uploaded-files" >> /home/ubuntu/ggm-server/.env
             echo "S3_DIRECTORY=prod" >> /home/ubuntu/ggm-server/.env
             echo "GPT_API_KEY=${{ secrets.GPT_API_KEY }}" >> /home/ubuntu/ggm-server/.env
+            echo "JWT_ACCESS_SECRET_KEY=${{ secrets.JWT_ACCESS_SECRET_KEY }}" >> /home/ubuntu/ggm-server/.env
+            echo "JWT_REFRESH_SECRET_KEY=${{ secrets.JWT_REFRESH_SECRET_KEY }}" >> /home/ubuntu/ggm-server/.env
 
       # 8. EC2에서 Docker Compose 실행
       - name: Deploy on EC2 using Docker Compose
