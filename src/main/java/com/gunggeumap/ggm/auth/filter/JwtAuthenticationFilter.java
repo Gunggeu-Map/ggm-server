@@ -51,6 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     null, userDetails.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
 
         } catch (UserNotFoundException e) {
             // User 조회 실패 : 존재 하지 않거나 탈퇴한 회원임
